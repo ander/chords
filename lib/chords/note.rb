@@ -12,7 +12,7 @@ module Chords
       interval = value % 12
       Chords.const_get([NOTES[interval]].flatten.first).new(octave)
     end
-
+    
     def value
       (@octave * 12) + @interval
     end
@@ -36,12 +36,23 @@ module Chords
     def +(other); Note.create(value + other) end
     def -(other); Note.create(value - other) end
   end
-
+  
+  # E.g. E + 3 => G
+  module NoteClassArithmetic
+    def +(interval)
+      Chords.const_get [NOTES[NOTES.index(self.to_s.gsub(/^.*::/, '')) + interval]].
+                       flatten.first
+    end
+    def -(interval); self + (-interval) end
+  end
+  
   NOTES.each_with_index do |names, i|
     names = [names].flatten
     names.each do |n|
       eval %Q(class #{n}
                 include Note
+                extend NoteClassArithmetic
+                
                 def initialize(octave=0)
                   @interval, @octave = #{i}, octave
                 end

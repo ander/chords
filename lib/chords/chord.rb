@@ -1,37 +1,38 @@
 require 'chords/note'
-require 'singleton'
 
 module Chords
   
   class Chord
-    def initialize(base, other_notes)
-       
+    def initialize(base_note, *other_notes)
+       @base_note, @other_notes = base_note, other_notes
     end
   end
   
-  class ChordGenerator
-    include Singleton
-    
-    def create_major(base)
+  module ChordFactory
+    extend self
+    def new_major(base)
+      Chord.new(base, base + 4, base + 7)
     end
-    def create_minor(base)
+    def new_minor(base)
+      Chord.new(base, base + 3, base + 7)
     end
-    def create_five(base)
+    def new_five(base)
+      Chord.new(base, base + 7)
     end
   end
   
   # Extensions to Note so we can say for example 'E.major' to create a chord
   module ChordExt
     def major
-      ChordGenerator.instance.create_major(self)
+      ChordFactory.new_major(self)
     end
     
     def minor
-      ChordGenerator.instance.create_minor(self)
+      ChordFactory.new_minor(self)
     end
     
     def five
-      ChordGenerator.instance.create_five(self)
+      ChordFactory.new_five(self)
     end
   end
   
