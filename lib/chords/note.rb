@@ -40,8 +40,10 @@ module Chords
   # E.g. E + 3 => G
   module NoteClassArithmetic
     def +(interval)
-      Chords.const_get [NOTES[NOTES.index(self.to_s.gsub(/^.*::/, '')) + interval]].
-                       flatten.first
+      note = NOTES.detect{|n| [n].flatten.include?(self.to_s.gsub(/^.*::/, ''))}
+      idx = NOTES.index(note) + interval
+      idx = idx % NOTES.size
+      Chords.const_get [NOTES[idx]].flatten.first
     end
     def -(interval); self + (-interval) end
   end
