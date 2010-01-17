@@ -7,7 +7,7 @@ module Chords
     include Comparable
     attr_reader :interval, :name, :octave
 
-    def self.create(value)
+    def self.create_by_value(value)
       octave = value / 12
       interval = value % 12
       Chords.const_get([NOTES[interval]].flatten.first).new(octave)
@@ -33,8 +33,8 @@ module Chords
       end
     end
 
-    def +(other); Note.create(value + other) end
-    def -(other); Note.create(value - other) end
+    def +(other); Note.create_by_value(value + other) end
+    def -(other); Note.create_by_value(value - other) end
   end
   
   # E.g. E + 3 => G
