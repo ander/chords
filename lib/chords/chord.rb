@@ -3,22 +3,35 @@ require 'chords/note'
 module Chords
   
   class Chord
-    attr_reader :root, :notes
+    attr_reader :notes
+    attr_accessor :root
     
-    def initialize(root, *notes)
-       @root, @notes = root, notes
+    def initialize(*notes)
+      @notes = notes.flatten
+      @root = @notes.first
     end
     
     def first_inversion
-      raise "Not enough notes for inversion" if notes.size < 2
-      Chord.new(@notes[0], @notes[1], @root)
+      raise "Not enough notes for inversion" if notes.size < 3
+      inversion = Chord.new(@notes[1], @notes[2], @root, *@notes[3..-1])
+      inversion.root = @root
+      inversion
     end
     
     def second_inversion
-      raise "Not enough notes for inversion" if notes.size < 2
-      Chord.new(@notes[1], @root, @notes[0])
+      raise "Not enough notes for inversion" if notes.size < 3
+      inversion = Chord.new(@notes[2], @root, @notes[1], *@notes[3..-1])
+      inversion.root = @root
+      inversion
     end
     
+    def add9
+      Chord.new(*@notes + [@root + 14])
+    end
+    
+    def add11
+      Chord.new(*@notes + [@root + 17])
+    end
   end
   
   module ChordFactory
