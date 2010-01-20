@@ -25,6 +25,14 @@ module Chords
       inversion
     end
     
+    def sixth
+      Chord.new(@notes + [@root + 9])
+    end
+    
+    def seventh
+      Chord.new(@notes + [@root + 10])
+    end
+    
     def add9
       Chord.new(@notes + [@root + 14])
     end
@@ -32,30 +40,13 @@ module Chords
     def add11
       Chord.new(@notes + [@root + 17])
     end
-  end
-  
-  module ChordFactory
-    extend self
-    @@chords = {}
     
-    def new_major(root)
-      Chord.new(root, root + 4, root + 7)
+    def bass(note)
+      chord = Chord.new([note] + @notes)
+      chord.root = self.root
+      chord
     end
-    def new_minor(root)
-      Chord.new(root, root + 3, root + 7)
-    end
-    def new_five(root)
-      Chord.new(root, root + 7)
-    end
+    
   end
-  
-  # Extensions to Note so we can say for example 'E.major' to create a chord
-  module NoteExt
-    def major; ChordFactory.new_major(self) end
-    def minor; ChordFactory.new_minor(self) end
-    def five;  ChordFactory.new_five(self)  end
-  end
-  
-  NOTES.flatten.each{|note_name| Chords.const_get(note_name).extend NoteExt}
   
 end

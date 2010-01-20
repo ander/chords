@@ -56,12 +56,11 @@ module Chords
     private
     
     def highest_used_string
-      return -1 if !@positions.any?
       indices = []
       @positions.each_with_index do |pos,i|
         indices << i unless pos.nil?
       end
-      indices.max
+      indices.max || -1
     end
     
     def highest_note

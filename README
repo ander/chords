@@ -2,6 +2,7 @@ Chords
 ======
 A chord generator lib for guitar-like instruments.
 
+
 Running irb under chords/lib:
 
 >> require 'chords/fretboard'

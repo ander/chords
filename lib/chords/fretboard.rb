@@ -1,4 +1,4 @@
-require 'chords/chord'
+require 'chords/chord_factory'
 require 'chords/fingering'
 require 'chords/text_formatter'
 
