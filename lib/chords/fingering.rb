@@ -5,7 +5,7 @@ module Chords
   class Fingering
     extend Forwardable
     
-    def_delegators :@positions, :[], :==, :inspect
+    def_delegators :@positions, :[], :==, :inspect, :each, :each_with_index
     
     def initialize(fretboard, positions=nil)
       @fretboard = fretboard
@@ -56,7 +56,7 @@ module Chords
       fingerings = fingering.expand(chord.notes.first)
       
       chord.notes[1..-1].each do |note|
-        fingerings = fingerings.map{|f| f.expand(note)}
+        fingerings = fingerings.map{|f| f.expand(note)}.flatten(1)
       end
       
       fingerings

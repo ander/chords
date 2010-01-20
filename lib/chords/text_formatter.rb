@@ -8,9 +8,7 @@ module Chords
     end
     
     def output(fingerings)
-      rows = @fretboard.open_notes.map do |open_note|
-        "#{open_note.name}: "
-      end
+      rows = [""] * @fretboard.open_notes.size
       
       fingerings.each do |fingering|
         fingering.each_with_index do |position,i|
@@ -18,7 +16,17 @@ module Chords
         end
       end
       
-      puts rows.reverse.join("\n")
+      idx = 0
+      while rows.first.length > idx
+        parts = []
+        rows.each_with_index do |row, i| 
+          parts << "#{@fretboard.open_notes[i].name}: " + row[idx...(idx+75)]
+        end
+        puts (parts.reverse.join("\n")) + "\n\n"
+        idx += 75
+      end
+      
+      puts "Total #{fingerings.size} fingerings."
     end
     
   end
