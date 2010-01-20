@@ -16,29 +16,20 @@ module Chords
     # Returns all fingering variations of this fingering
     # expanded with note.
     # Expanded note wil be on a higher string than existing notes.
+    # It will also be the highest note.
     def expand(note)
-      if !@positions.any?
-        first_free = 0
-      else
-        indices = []
-        @positions.each_with_index do |pos,i|
-          indices << i unless pos.nil?
-        end 
-        first_free = indices.max + 1
-      end
-      
       fingerings = []
       
-      (first_free..(@positions.size-1)).each do |str_i|
+      ((highest_used_string+1)..(@positions.size-1)).each do |str_i|
         open_note = @fretboard.open_notes[str_i]
         pos = note.new(open_note.octave).value - open_note.value
         pos += 12 if pos < 0
-    
+        
         while pos <= @fretboard.frets
           pos_arr = (@positions + [pos]).select{|p| !p.nil? && p > 0}
           distance = (pos_arr.max || 0) - (pos_arr.min || 0)
           
-          if distance <= @max_fret_distance
+          if distance <= @max_fret_distance and (open_note + pos) > highest_note
             new_positions = @positions.dup
             new_positions[str_i] = pos
             fingerings << Fingering.new(@fretboard, new_positions)
@@ -60,6 +51,25 @@ module Chords
       end
       
       fingerings
+    end
+    
+    private
+    
+    def highest_used_string
+      return -1 if !@positions.any?
+      indices = []
+      @positions.each_with_index do |pos,i|
+        indices << i unless pos.nil?
+      end
+      indices.max
+    end
+    
+    def highest_note
+      notes = []
+      @positions.each_with_index do |pos,i|
+        notes << @fretboard.open_notes[i] + pos unless pos.nil?
+      end
+      notes.max || -1
     end
     
   end

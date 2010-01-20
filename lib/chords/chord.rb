@@ -36,6 +36,8 @@ module Chords
   
   module ChordFactory
     extend self
+    @@chords = {}
+    
     def new_major(root)
       Chord.new(root, root + 4, root + 7)
     end
