@@ -26,11 +26,11 @@ module Chords
     end
     
     def add9
-      Chord.new(*@notes + [@root + 14])
+      Chord.new(@notes + [@root + 14])
     end
     
     def add11
-      Chord.new(*@notes + [@root + 17])
+      Chord.new(@notes + [@root + 17])
     end
   end
   

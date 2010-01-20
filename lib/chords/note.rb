@@ -33,6 +33,8 @@ module Chords
       end
     end
 
+    def name; self.class.to_s.gsub(/^.*::/, '') end
+
     def +(other); Note.create_by_value(value + other) end
     def -(other); Note.create_by_value(value - other) end
   end

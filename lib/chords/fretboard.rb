@@ -1,14 +1,15 @@
 require 'chords/chord'
+require 'chords/fingering'
 require 'chords/text_formatter'
 
 module Chords
   
   class Fretboard
+    attr_reader :frets, :open_notes
     
-    def initialize(base_notes, frets)
-      @base_notes, @frets = base_notes, frets
-      @max_fret_distance = 3
-      @formatter = TextFormatter.new
+    def initialize(open_notes, frets)
+      @open_notes, @frets = open_notes, frets
+      @formatter = TextFormatter.new(self)
     end
     
     # Guitar in standard tuning
@@ -22,16 +23,9 @@ module Chords
     end
     
     def find(chord)
-      fingerings = find_fingerings(chord)
+      fingerings = Fingering.find_variations(self, chord)
       @formatter.output(fingerings)
     end
     
-    private
-    
-    def find_fingerings(chord)
-      return [[0, 2, 2, 1, 0, 0]]
-    end
-    
   end
-
 end
