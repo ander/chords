@@ -22,9 +22,13 @@ module Chords
       Fretboard.new([D.new(-1), A.new, D.new, G.new(1), A.new(1), D.new(1)], 16)
     end
     
-    def find(chord)
-      fingerings = Fingering.find_variations(self, chord)
-      @formatter.output(fingerings)
+    def find(chord, opts={})
+      Fingering.find_variations(self, chord, opts)
+    end
+    
+    def print(chord, opts={})
+      fingerings = find(chord, opts)
+      @formatter.print(fingerings)
     end
     
   end

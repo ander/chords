@@ -5,6 +5,13 @@ include Chords
 
 describe Fingering do
   
+  it "should behave correctly in array with uniq" do
+    @fretboard = Fretboard.new([E.new, A.new, D.new], 12)
+    f = Fingering.new(@fretboard, [3, nil, nil])
+    f2 = Fingering.new(@fretboard, [3, nil, nil])
+    [f, f2].uniq.should == [f]
+  end
+  
   describe "#expand" do
   
     it "should function with empty fingering" do
@@ -35,6 +42,32 @@ describe Fingering do
       fingerings.detect{|f| f == [3, 2, 0, nil, nil, nil] }.should_not be_nil
       fingerings.detect{|f| f == [3, 2, nil, nil, 3, nil] }.should_not be_nil
       fingerings.size.should == 2
+    end
+    
+  end
+  
+  describe "#add_duplicate" do
+    it "should return [] if no unused strings" do
+      fb = Fretboard.new([E.new, A.new, D.new], 12)
+      f = Fingering.new(fb, [2, 0, 0])
+      f.add_duplicate.should == []
+    end
+    
+    it "should return variations (1)" do
+      fb = Fretboard.new([E.new, A.new, D.new, G.new(1)], 12)
+      f = Fingering.new(fb, [0, 11, 9, nil])
+      duplicates = f.add_duplicate
+      duplicates.should include([0,11,9,9])
+      duplicates.size.should == 1
+    end
+    
+    it "should return variations (1)" do
+      fb = Fretboard.new([E.new, A.new, D.new, G.new(1)], 12)
+      f = Fingering.new(fb, [0, 2, nil, nil])
+      duplicates = f.add_duplicate
+      duplicates.should include([0,2,2,nil])
+      duplicates.should include([0,2,nil,4])
+      duplicates.size.should == 2
     end
     
   end
