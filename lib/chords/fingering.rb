@@ -39,8 +39,8 @@ module Chords
       fingerings = []
       
       ((highest_used_string+1)..(@positions.size-1)).each do |str_i|
-        new_note_positions(note, str_i).each do |pos|
-          if distance(pos) <= max_fret_distance and (@fretboard.open_notes[str_i] + pos) > highest_note
+        new_note_positions(note, str_i, max_fret_distance).each do |pos|
+          if (@fretboard.open_notes[str_i] + pos) > highest_note
             new_positions = @positions.dup
             new_positions[str_i] = pos
             fingerings << Fingering.new(@fretboard, new_positions)
@@ -62,9 +62,7 @@ module Chords
         next unless pos.nil?
         
         each_note do |note|
-          new_note_positions(note, i).each do |pos|
-            next if distance(pos) > max_fret_distance
-            
+          new_note_positions(note, i, max_fret_distance).each do |pos|
             new_positions = @positions.dup
             new_positions[i] = pos
             fingerings << Fingering.new(@fretboard, new_positions)
@@ -91,14 +89,14 @@ module Chords
     
     private
     
-    def new_note_positions(note, string_index)
+    def new_note_positions(note, string_index, max_fret_distance)
       positions = []
       open_note = @fretboard.open_notes[string_index]
       pos = note.new(open_note.octave).value - open_note.value
       pos += 12 if pos < 0
       
       while pos <= @fretboard.frets
-        positions << pos
+        positions << pos if distance(pos) <= max_fret_distance
         pos += 12
       end
       positions
