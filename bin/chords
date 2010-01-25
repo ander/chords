@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'chords/command_line'
+
+Chords::CommandLineParser.new(ARGV).parse

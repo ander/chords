@@ -20,7 +20,7 @@ module Chords
       while rows.first.length > idx
         parts = []
         rows.each_with_index do |row, i| 
-          parts << "#{@fretboard.open_notes[i].name}: " + row[idx...(idx+75)]
+          parts << "#{@fretboard.open_notes[i].name.rjust(2, ' ')}: " + row[idx...(idx+75)]
         end
         puts "\n" + (parts.reverse.join("\n")) + "\n\n"
         idx += 75

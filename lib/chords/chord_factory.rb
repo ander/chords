@@ -3,29 +3,26 @@ require 'chords/chord'
 module Chords
   module ChordFactory
     extend self
-    @@chords = {:major  => [4,7],
-                :minor  => [3,7],
-                :five   => [7],
-                :sus2   => [2, 7],
-                :sus4   => [5, 7],
-                :aug    => [4, 8],
-                :dim    => [3, 6],
-                :minus5 => [4, 6]}
-    
-    def self.chords; @@chords end
+    CHORDS = {:major  => [4,7],
+              :minor  => [3,7],
+              :five   => [7],
+              :sus2   => [2, 7],
+              :sus4   => [5, 7],
+              :aug    => [4, 8],
+              :dim    => [3, 6],
+              :minus5 => [4, 6]}
     
     def new_chord(root, key)
-      raise "No chord with key #{key}" unless @@chords.has_key?(key)
+      raise "No chord with key #{key}" unless CHORDS.has_key?(key)
       notes = [root]
-      notes += @@chords[key].map{|interval| root + interval}
+      notes += CHORDS[key].map{|interval| root + interval}
       Chord.new(notes)
     end
-    
   end
   
   # Extensions to Note so we can say for example 'E.major' to create a chord
   module NoteExt
-    ChordFactory.chords.keys.each do |key|
+    ChordFactory::CHORDS.keys.each do |key|
       define_method key do
         ChordFactory.new_chord(self, key)
       end
