@@ -2,9 +2,15 @@ Chords
 ======
 A chord generator lib for guitar-like instruments.
 
+Using via gem (hosted at gemcutter.org)
+---------------------------------------
+
+$ sudo gem install chords
+$ chords -h
+
 
 Running irb under chords/lib:
-
+-----------------------------
 >> require 'chords'
 => true
 >> include Chords
