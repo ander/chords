@@ -104,11 +104,11 @@ module Chords
     
     def examples
       "\n\nExamples:\n"+
-                 "$ chords E.major.add9\n"+
-                 "$ chords C.major.bass(G)\n"+
-                 "$ chords -d 3 As.dim\n"+
-       "$ chords -t dadgad D.minor.first_inversion\n"+
-       "\nSharp notes are followed by 's' and flats by 'b', e.g. 'Gs' and 'Eb'."
+      "$ chords E.major.add9\n"+
+      "$ chords \"C.major.bass(G)\"\n"+
+      "$ chords -d 3 As.dim\n"+
+      "$ chords -t dadgad D.minor.first_inversion\n"+
+      "\nSharp notes are followed by 's' and flats by 'b', e.g. 'Gs' and 'Eb'."
     end
     
   end

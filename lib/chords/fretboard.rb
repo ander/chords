@@ -5,7 +5,7 @@ require 'chords/text_formatter'
 module Chords
   
   class Fretboard
-    DEFAULT_FRETS = 16
+    DEFAULT_FRETS = 14
     
     # See http://en.wikipedia.org/wiki/Guitar_tunings
     TUNINGS = {
