@@ -10,4 +10,5 @@ spec = Gem::Specification.new do |spec|
   spec.description = "Chords is a chord generator for guitar-like instruments. "+
                      "Handy for special tunings. "
   spec.summary = 'Chord generator for guitar-like instruments.'
+  spec.add_dependency('prawn', '>= 0.8.4')
 end

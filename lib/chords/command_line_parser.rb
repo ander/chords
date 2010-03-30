@@ -67,8 +67,8 @@ module Chords
         chord_str =~ /^(.{1,2})\.(.*)/
 
         if $1 and $2 and Chords::NOTES.flatten.include?($1)
-          note = Chords.const_get($1)
           begin
+            note = Chords.const_get($1)
             chord = note.class_eval($2)
             Fretboard.new(@tuning, @frets).print(chord, 
               {:duplicates => @duplicates,

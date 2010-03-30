@@ -1,6 +1,7 @@
 require 'chords/chord_factory'
 require 'chords/fingering'
 require 'chords/text_formatter'
+require 'chords/pdf_formatter'
 
 module Chords
   
@@ -42,14 +43,15 @@ module Chords
     
     attr_reader :frets, :open_notes
     
-    def initialize(open_notes, frets)
+    def initialize(open_notes, frets, formatter_class=TextFormatter)
       @open_notes, @frets = open_notes, frets
-      @formatter = TextFormatter.new(self)
+      @formatter = formatter_class.new(self)
     end
     
     def self.method_missing(meth, *args)
       if TUNINGS.has_key?(meth)
-        Fretboard.new(TUNINGS[meth], (args.first || DEFAULT_FRETS))
+        Fretboard.new(TUNINGS[meth], (args[0] || DEFAULT_FRETS),
+                      args[1] || TextFormatter)
       else
         super
       end
@@ -61,7 +63,7 @@ module Chords
     
     def print(chord, opts={})
       fingerings = find(chord, opts)
-      @formatter.print(fingerings)
+      @formatter.print(fingerings, opts)
     end
     
   end

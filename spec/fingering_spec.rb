@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'chords/fretboard'
 require 'chords/fingering'
 
@@ -61,7 +62,7 @@ describe Fingering do
       duplicates.size.should == 1
     end
     
-    it "should return variations (1)" do
+    it "should return variations (2)" do
       fb = Fretboard.new([E.new, A.new, D.new, G.new(1)], 12)
       f = Fingering.new(fb, [0, 2, nil, nil])
       duplicates = f.add_duplicate

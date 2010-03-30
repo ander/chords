@@ -7,7 +7,7 @@ module Chords
       @fretboard = fretboard
     end
     
-    def print(fingerings)
+    def print(fingerings, opts={})
       rows = [""] * @fretboard.open_notes.size
       
       fingerings.each do |fingering|

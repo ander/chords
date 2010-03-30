@@ -87,6 +87,18 @@ module Chords
       @positions.hash
     end
     
+    # return an array of relative positions
+    def relative(max_fret_dist)
+      not_open = @positions.select{|p| !p.nil? and p > 0}
+      
+      if not_open.max <= max_fret_dist
+        @positions
+      else
+        diff = (not_open.min - 1)
+        @positions.map{|p| (p.nil? or p == 0) ? p : p - diff}
+      end
+    end
+    
     private
     
     def new_note_positions(note, string_index, max_fret_distance)
