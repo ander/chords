@@ -91,7 +91,7 @@ module Chords
     def relative(max_fret_dist)
       not_open = @positions.select{|p| !p.nil? and p > 0}
       
-      if not_open.max <= max_fret_dist
+      if not_open.max <= (max_fret_dist + 1)
         @positions
       else
         diff = (not_open.min - 1)
