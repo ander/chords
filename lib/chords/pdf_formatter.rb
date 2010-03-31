@@ -53,20 +53,21 @@ module Chords
       @pdf.mask(:line_width) do
         @pdf.line_width 3
         @pdf.stroke_line box.top_left, box.top_right
-        @pdf.line_width 1
-        @pdf.stroke_line box.bottom_left, box.bottom_right
-        
-        @fretboard.open_notes.each_with_index do |note, note_i|
-          x = box.left + note_i*string_x_dist(box)
-          @pdf.stroke_line [x, box.top], [x, box.bottom]
-          fretboard_text(note.title, box.left + note_i*string_x_dist(box), box.bottom - 11)
-        end
-        
-        @max_dist.times do |n|
-          y = box.top - ((n+1) * string_y_dist(box))
-          @pdf.stroke_line [box.left, y], [box.right, y]
-        end 
       end
+        
+      @pdf.stroke_line box.bottom_left, box.bottom_right
+        
+      @fretboard.open_notes.each_with_index do |note, note_i|
+        x = box.left + note_i*string_x_dist(box)
+        @pdf.stroke_line [x, box.top], [x, box.bottom]
+        fretboard_text(note.title, box.left + note_i*string_x_dist(box), box.bottom - 11)
+      end
+        
+      @max_dist.times do |n|
+        y = box.top - ((n+1) * string_y_dist(box))
+        @pdf.stroke_line [box.left, y], [box.right, y]
+      end 
+      
     end
     
     def print_fingering(fingering, i)
