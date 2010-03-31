@@ -38,7 +38,12 @@ module Chords
                :c15      => [C.new(-1), G.new, D.new, G.new(1), C.new(1), D.new(1)],
                
                # "Extended chord" tunings
-               :dmaj7    => [D.new(-1), A.new, D.new, Fs.new(1), A.new(1), Cs.new(1)]
+               :dmaj7    => [D.new(-1), A.new, D.new, Fs.new(1), A.new(1), Cs.new(1)],
+               
+               # Other instruments
+               :mandolin => [G.new, D.new, A.new(1), E.new(2)],
+               :ukulele  => [G.new, C.new, E.new(1), A.new(1)],
+               :banjo    => [G.new, D.new, G.new(1), B.new(1), D.new(1)]
               }
     
     attr_reader :frets, :open_notes
