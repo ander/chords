@@ -16,7 +16,7 @@ module Chords
       raise "No chord with key #{key}" unless CHORDS.has_key?(key)
       notes = [root]
       notes += CHORDS[key].map{|interval| root + interval}
-      Chord.new(notes)
+      Chord.new([key.to_s], notes)
     end
   end
   

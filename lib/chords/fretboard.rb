@@ -63,7 +63,7 @@ module Chords
     
     def print(chord, opts={})
       fingerings = find(chord, opts)
-      @formatter.print(fingerings, opts)
+      @formatter.print(chord.title, fingerings, opts)
     end
     
   end

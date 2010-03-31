@@ -10,13 +10,18 @@ module Chords
       @fretboard = fretboard
     end
     
-    def print(fingerings, opts={})
-      @pdf = Prawn::Document.new
+    def print(title, fingerings, opts={})
+      @pdf = Prawn::Document.new(:top_margin => 50)
+      @pdf.draw_text "#{title}", :at => [@pdf.margin_box.left, @pdf.margin_box.top + 30]
       @pdf.define_grid(:columns => 4, :rows => 6, :gutter => 40)
       @max_dist = opts[:max_fret_distance] || Fingering::DEFAULT_MAX_FRET_DISTANCE
       
-      fingerings.each_with_index do |f, i|
-        print_fingering(f, i)
+      if fingerings.empty?
+        @pdf.text 'No fingerings found.'
+      else
+        fingerings.each_with_index do |f, i|
+          print_fingering(f, i)
+        end
       end
       
       @pdf.render_file('chords.pdf')
@@ -37,6 +42,11 @@ module Chords
       @pdf.grid(i / 4, i % 4)
     end
     
+    def fretboard_text(str, x, y)
+      x_adj = str.length > 1 ? -6 : -3
+      @pdf.draw_text(str, :at => [x + x_adj, y])
+    end
+    
     def print_fretboard(i)
       box = get_box(i)
       
@@ -46,9 +56,10 @@ module Chords
         @pdf.line_width 1
         @pdf.stroke_line box.bottom_left, box.bottom_right
         
-        @fretboard.open_notes.size.times do |n|
-          x = box.left + n*string_x_dist(box)
+        @fretboard.open_notes.each_with_index do |note, note_i|
+          x = box.left + note_i*string_x_dist(box)
           @pdf.stroke_line [x, box.top], [x, box.bottom]
+          fretboard_text(note.title, box.left + note_i*string_x_dist(box), box.bottom - 11)
         end
         
         @max_dist.times do |n|
@@ -66,9 +77,7 @@ module Chords
       rad = ([string_y_dist(box), string_x_dist(box)].min / 2) - 4
       
       fingering.each_with_index do |pos, pos_i|
-        x_adj = pos.to_s.length > 1 ? -6 : -3
-        @pdf.draw_text((pos || 'x').to_s, 
-                      :at => [box.left + pos_i*string_x_dist(box) + x_adj, box.top + 3])
+        fretboard_text((pos || 'x').to_s, box.left + pos_i*string_x_dist(box), box.top + 4)
         
         next if [nil, 0].include?(pos)
         

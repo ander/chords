@@ -11,6 +11,8 @@ $ chords -h
 
 Running irb under chords/lib:
 -----------------------------
+>> require 'rubygems'
+=> true
 >> require 'chords'
 => true
 >> include Chords
