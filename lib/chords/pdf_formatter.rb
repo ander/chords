@@ -13,12 +13,13 @@ module Chords
     def print(title, fingerings, opts={})
       @pdf = Prawn::Document.new(:top_margin => 50)
       @pdf.draw_text "#{title}", :at => [@pdf.margin_box.left, @pdf.margin_box.top + 30]
-      @pdf.define_grid(:columns => 4, :rows => 6, :gutter => 40)
       @max_dist = opts[:max_fret_distance] || Fingering::DEFAULT_MAX_FRET_DISTANCE
       
       if fingerings.empty?
         @pdf.text 'No fingerings found.'
       else
+        @pdf.define_grid(:columns => 4, :rows => 6, :gutter => 40)
+        
         fingerings.each_with_index do |f, i|
           print_fingering(f, i)
         end
@@ -39,7 +40,9 @@ module Chords
     end
     
     def get_box(i)
-      @pdf.grid(i / 4, i % 4)
+      @pdf.start_new_page if @pdf.page_count <= i / 24
+      i_on_page = i % 24
+      @pdf.grid(i_on_page / 4, i_on_page % 4)  
     end
     
     def fretboard_text(str, x, y)
