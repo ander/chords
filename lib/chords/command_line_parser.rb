@@ -10,6 +10,7 @@ module Chords
       @duplicates = 0
       @max_fret_distance = Chords::Fingering::DEFAULT_MAX_FRET_DISTANCE
       @tuning = Chords::Fretboard::TUNINGS[:standard]
+      @formatter = Chords::TextFormatter
     end
     
     def parse
@@ -48,6 +49,10 @@ module Chords
         @tuning = Chords::Fretboard::TUNINGS[t.to_sym]
       end
       
+      @opts.on("--pdf", "Output to pdf.") do
+        @formatter = Chords::PDFFormatter
+      end
+      
       @opts.on_tail("-h", "--help", examples) do
         puts @opts
       end
@@ -70,7 +75,7 @@ module Chords
           begin
             note = Chords.const_get($1)
             chord = note.class_eval($2)
-            Fretboard.new(@tuning, @frets).print(chord, 
+            Fretboard.new(@tuning, @frets, @formatter).print(chord, 
               {:duplicates => @duplicates,
                :max_fret_distance => @max_fret_distance})
             return
