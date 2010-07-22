@@ -2,7 +2,7 @@ Chords
 ======
 A chord generator lib for guitar-like instruments.
 
-Using via gem (hosted at gemcutter.org)
+Using via gem (hosted at rubygems.org)
 ---------------------------------------
 
 $ sudo gem install chords
