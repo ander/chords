@@ -2,6 +2,7 @@ require 'chords/chord_factory'
 require 'chords/fingering'
 require 'chords/text_formatter'
 require 'chords/pdf_formatter'
+require 'chords/html_formatter'
 
 module Chords
   

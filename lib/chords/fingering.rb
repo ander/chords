@@ -87,6 +87,11 @@ module Chords
       @positions.hash
     end
     
+    # fingering id, a unique identifier for fretboard/fingering combo
+    def fid
+      @fretboard.open_notes.to_s + @positions.to_s
+    end
+    
     # return an array of relative positions
     def relative(max_fret_dist)
       not_open = @positions.select{|p| !p.nil? and p > 0}
