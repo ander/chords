@@ -5,7 +5,7 @@ Magick::RVG::dpi = 72
 
 module Chords
   
-  # Formats fingering as <img/> tags (base64-encoded data URIs) 
+  # Formats fingerings as <img/> tags (base64-encoded data URIs) 
   class HTMLFormatter
     class NonCache
       def fetch(key); yield end
