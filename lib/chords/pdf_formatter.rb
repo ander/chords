@@ -25,8 +25,12 @@ module Chords
         end
       end
       
-      @pdf.render_file('chords.pdf')
-      puts "Wrote chords.pdf"
+      if opts[:inline]
+        @pdf.render
+      else
+        @pdf.render_file('chords.pdf')
+        puts "Wrote chords.pdf"
+      end
     end
     
     private

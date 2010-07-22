@@ -17,16 +17,24 @@ module Chords
       end
       
       idx = 0
+      output = ''
+      
       while rows.first.length > idx
         parts = []
         rows.each_with_index do |row, i| 
           parts << "#{@fretboard.open_notes[i].title.rjust(2, ' ')}: " + row[idx...(idx+75)]
         end
-        puts "\n" + (parts.reverse.join("\n")) + "\n\n"
+        output += "\n" + (parts.reverse.join("\n")) + "\n\n"
         idx += 75
       end
       
-      puts "Total #{fingerings.size} fingerings."
+      output += "Total #{fingerings.size} fingerings."
+      
+      if opts[:inline]
+        output
+      else
+        puts output
+      end
     end
     
   end

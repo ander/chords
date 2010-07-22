@@ -49,7 +49,7 @@ module Chords
         @tuning = Chords::Fretboard::TUNINGS[t.to_sym]
       end
       
-      @opts.on("--pdf", "Output to pdf. Requires Prawn") do
+      @opts.on("--pdf", "Output to pdf. Requires Prawn.") do
         begin
           require 'chords/pdf_formatter'
         rescue LoadError => e
@@ -59,7 +59,7 @@ module Chords
         @formatter = Chords::PDFFormatter
       end
       
-      @opts.on("--html", "Output to html. Requires RMagick") do
+      @opts.on("--html", "Output to html. Requires RMagick.") do
         begin
           require 'chords/html_formatter'
         rescue LoadError => e

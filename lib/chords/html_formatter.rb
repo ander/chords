@@ -25,11 +25,14 @@ module Chords
         html += get_element(fingering)
       end
       
-      File.open('chords.html', 'w') do |file|
-        file.write html
+      if opts[:inline]
+        html
+      else 
+        File.open('chords.html', 'w') do |file|
+          file.write html
+        end
+        puts "Wrote chords.html"
       end
-      
-      puts "Wrote chords.html"
     end
     
     private
