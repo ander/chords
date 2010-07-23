@@ -11,6 +11,8 @@ module Chords
       def fetch(key); yield end
     end
     
+    attr_accessor :cache
+    
     def initialize(fretboard, cache=NonCache.new)
       @fretboard = fretboard
       @cache = cache

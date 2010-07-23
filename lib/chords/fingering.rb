@@ -89,7 +89,8 @@ module Chords
     
     # fingering id, a unique identifier for fretboard/fingering combo
     def fid
-      @fretboard.open_notes.to_s + @positions.to_s
+      @fretboard.open_notes.map{|n| n.class.title}.to_s + 
+        @positions.map{|pos| pos.nil? ? 'x' : pos}.to_s
     end
     
     # return an array of relative positions

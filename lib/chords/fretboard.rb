@@ -45,7 +45,7 @@ module Chords
                :banjo    => [G.new, D.new, G.new(1), B.new(1), D.new(1)]
               }
     
-    attr_reader :frets, :open_notes
+    attr_reader :frets, :open_notes, :formatter
     
     def initialize(open_notes, frets, formatter_class=TextFormatter)
       @open_notes, @frets = open_notes, frets
