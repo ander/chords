@@ -9,6 +9,13 @@ $ sudo gem install chords
 $ chords -h
 
 
+Using at Heroku
+---------------
+
+Chords is also hosted at Heroku (http://chords.heroku.com) where you
+can use it through a web interface.
+
+
 Running irb under chords/lib:
 -----------------------------
 >> require 'rubygems'
