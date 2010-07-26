@@ -70,7 +70,17 @@ describe Fingering do
       duplicates.should include([0,2,nil,4])
       duplicates.size.should == 2
     end
-    
+  end
+  
+  describe "#fid" do
+    it "should return a proper string" do
+      fingering = Fingering.new(Fretboard.standard, [0,2,2,1,0,0])
+      fingering.fid.should == 'EADGBE022100'
+    end
+    it "should convert nil positions to x's" do
+      fingering = Fingering.new(Fretboard.standard, [nil,0,2,2,2,0])
+      fingering.fid.should == 'EADGBEx02220'
+    end
   end
   
 end
