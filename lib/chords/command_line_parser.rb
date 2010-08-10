@@ -43,10 +43,11 @@ module Chords
       
       @opts.on("-t", "--tuning TUNING", 
               "Tuning to use. See -l for list of available tunings and chords.") do |t|
-        if !Chords::Fretboard::TUNINGS.has_key?(t.to_sym)
+        begin
+          @tuning = Fretboard.send(t).open_notes
+        rescue Exception => e
           raise OptionParser::ParseError.new("Invalid tuning")
         end
-        @tuning = Chords::Fretboard::TUNINGS[t.to_sym]
       end
       
       @opts.on("--pdf", "Output to pdf. Requires Prawn.") do
@@ -109,6 +110,8 @@ module Chords
       Chords::Fretboard::TUNINGS.each do |key, value|
         out += "#{key.to_s.ljust(12, ' ')}: #{value.map{|n| n.class.to_s.gsub(/.*::/,'')}.join(',')}\n"
       end
+      out += "\nYou can also give a tuning as a string of notes, e.g. 'eadgbe'. Note that "+
+             "all 'b':s are considered notes, not flats, so use 's':s for sharps instead.\n"
       out += "\nChords:\n======\n"
       Chords::ChordFactory::CHORDS.each do |key, value|
         out += "#{key}\n"

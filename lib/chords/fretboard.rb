@@ -54,7 +54,6 @@ module Chords
     
     # Creates a new fretboard, parsing the open notes from the open_notes_str.
     # All 'b':s are interpreted as B-notes, not flats, so use 's' for sharps instead.
-    
     def self.new_by_string(open_notes_str, frets=DEFAULT_FRETS, 
                            formatter_class=TextFormatter)
       open_notes_str.upcase!
@@ -102,9 +101,31 @@ module Chords
     
     # Method for printing a single fingering using Fingering#fid,
     # which contains also the tuning/fretboard used.
+    # Doesn't handle big max_fret_distances right.
     def self.print_fingering_by_fid(fid, opts={}, formatter_class=TextFormatter)
-      # tuning = Fretboard.new_by_string(splitted_fid, frets, formatter_class)
+      fingering_part = fid.split(/[efgabhcds]/).last
+      raise "Invalid fingering" if fingering_part.nil?
+      tuning_part = fid.sub(fingering_part, '')
       
+      fretboard = Fretboard.new_by_string(tuning_part, 50, formatter_class)
+      over_tens = fingering_part.size - fretboard.open_notes.size
+      
+      i=0
+      positions = []
+      
+      while i < fingering_part.size
+        fp = fingering_part[i,1]
+        fp == 'x' ? pos = nil : pos = fp.to_i
+        if over_tens > 0 and pos and pos < 4
+          over_tens -= 1
+          i += 2
+          pos = "#{pos}#{fingering_part[i+1,1]}".to_i
+        else
+          i += 1
+        end
+        positions << pos
+      end
+      fretboard.formatter.print('', [Fingering.new(fretboard, positions)], opts)
     end
     
   end
