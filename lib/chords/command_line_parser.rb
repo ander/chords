@@ -44,7 +44,7 @@ module Chords
       @opts.on("-t", "--tuning TUNING", 
               "Tuning to use. See -l for list of available tunings and chords.") do |t|
         begin
-          @tuning = Fretboard.send(t).open_notes
+          @tuning = Fretboard.send(t.downcase).open_notes
         rescue Exception => e
           raise OptionParser::ParseError.new("Invalid tuning")
         end
