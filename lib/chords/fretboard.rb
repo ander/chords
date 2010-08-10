@@ -26,8 +26,8 @@ module Chords
                :cross_e  => [E.new, B.new, E.new(1), G.new(1), B.new(1), E.new(2)],
                :cross_d  => [D.new(-1), A.new, D.new, F.new(1), A.new(1), D.new(1)],
                :cross_a  => [E.new, A.new, E.new(1), A.new(1), C.new(1), E.new(2)],
-               :cross_g  => [D.new(-1), G.new, D.new, G.new(1), Bb.new(1), D.new(1)],
-               :cross_c  => [C.new(-1), G.new, C.new, G.new(1), C.new(1), Eb.new(1)],
+               :cross_g  => [D.new(-1), G.new, D.new, G.new(1), As.new(1), D.new(1)],
+               :cross_c  => [C.new(-1), G.new, C.new, G.new(1), C.new(1), Ds.new(1)],
                
                # Modal tunings
                :cacgce   => [C.new(-1), A.new, C.new, G.new(1), C.new(1), E.new(2)],
@@ -47,15 +47,45 @@ module Chords
     
     attr_reader :frets, :open_notes, :formatter
     
-    def initialize(open_notes, frets, formatter_class=TextFormatter)
+    def initialize(open_notes, frets=DEFAULT_FRETS, formatter_class=TextFormatter)
       @open_notes, @frets = open_notes, frets
       @formatter = formatter_class.new(self)
+    end
+    
+    # Creates a new fretboard, parsing the open notes from the open_notes_str.
+    # All 'b':s are interpreted as B-notes, not flats, so use 's' for sharps instead.
+    
+    def self.new_by_string(open_notes_str, frets=DEFAULT_FRETS, 
+                           formatter_class=TextFormatter)
+      open_notes_str.upcase!
+      raise "Provide at least 3 strings" if open_notes_str.scan(/[^S]/m).size < 3
+      open_notes = []
+      
+      open_notes_str.scan(/./m).each do |chr|
+        if chr == 'S'
+          raise "Invalid tuning!" if open_notes.empty?
+          open_notes[open_notes.size-1] += 1
+        else
+          open_notes << Chords.const_get(chr).new
+        end
+      end
+      
+      (1..(open_notes.size-1)).each do |i|
+        open_notes[i] += 12 while open_notes[i-1] > open_notes[i]
+      end
+      
+      Fretboard.new(open_notes, frets, formatter_class)
     end
     
     def self.method_missing(meth, *args)
       if TUNINGS.has_key?(meth)
         Fretboard.new(TUNINGS[meth], (args[0] || DEFAULT_FRETS),
                       args[1] || TextFormatter)
+                      
+      elsif meth.to_s =~ /^[efgabhcds]+$/
+        Fretboard.new_by_string(meth.to_s, (args[0] || DEFAULT_FRETS),
+                                args[1] || TextFormatter)
+      
       else
         super
       end
@@ -68,6 +98,13 @@ module Chords
     def print(chord, opts={})
       fingerings = find(chord, opts)
       @formatter.print(chord.title, fingerings, opts)
+    end
+    
+    # Method for printing a single fingering using Fingering#fid,
+    # which contains also the tuning/fretboard used.
+    def self.print_fingering_by_fid(fid, opts={}, formatter_class=TextFormatter)
+      # tuning = Fretboard.new_by_string(splitted_fid, frets, formatter_class)
+      
     end
     
   end

@@ -87,7 +87,12 @@ module Chords
       @positions.hash
     end
     
-    # fingering id, a unique identifier for fretboard/fingering combo
+    # Fingering id, a unique identifier for fretboard/fingering combo.
+    # Actually, fid is not unique if max_fret_distance >= 9,
+    # as positions [0,10,0,0,1,0] and [0,1,0,0,0,10] produce the
+    # same fid (if the tuning is the same).
+    # However, max_fret_distance of 9 or greater is not 
+    # realistic.
     def fid
       @fretboard.open_notes.map{|n| n.class.title}.to_s + 
         @positions.map{|pos| pos.nil? ? 'x' : pos}.to_s
