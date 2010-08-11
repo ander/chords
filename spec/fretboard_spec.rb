@@ -16,8 +16,12 @@ describe Fretboard do
     end
   end
   
-  describe ".print_fingering_by_fid" do
-    
+  it "should parse positions right" do
+    Fretboard.parse_positions('022100', 6).should == [2, [0,2,2,1,0,0]]
+    Fretboard.parse_positions('0000010', 6).should == [2, [0,0,0,0,0,10]]
+    Fretboard.parse_positions('01414130x', 6).should == [2, [0,14,14,13,0,nil]]
+    Fretboard.parse_positions('357x0x', 6).should == [4, [3,5,7,nil,0,nil]]
+    Fretboard.parse_positions('xxxxxx', 6).should == [2, [nil]*6]
   end
   
 end

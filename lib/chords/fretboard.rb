@@ -108,24 +108,36 @@ module Chords
       tuning_part = fid.sub(fingering_part, '')
       
       fretboard = Fretboard.new_by_string(tuning_part, 50, formatter_class)
-      over_tens = fingering_part.size - fretboard.open_notes.size
       
-      i=0
-      positions = []
+      max_fret_distance, positions = parse_positions(fingering_part, 
+                                                     fretboard.open_notes.size)
+                                                     
+      fretboard.formatter.print('', [Fingering.new(fretboard, positions)],
+                                opts.merge(:max_fret_distance => max_fret_distance))
+    end
+    
+    # parse positions from a string, for example '022100'
+    # returns [max_fret_distance, positions], where max_fret_distance has
+    # a minimum of 2
+    def self.parse_positions(position_str, no_of_strings)
+      position_str.downcase!
+      positions = position_str.scan(/./).map{|pos| pos == 'x' ? nil : pos.to_i}
+      over_tens = positions.size - no_of_strings
       
-      while i < fingering_part.size
-        fp = fingering_part[i,1]
-        fp == 'x' ? pos = nil : pos = fp.to_i
-        if over_tens > 0 and pos and pos < 4
-          over_tens -= 1
-          i += 2
-          pos = "#{pos}#{fingering_part[i+1,1]}".to_i
-        else
-          i += 1
+      while over_tens > 0
+        idx = positions.index{|p| !p.nil? and p > 0 and p < 3}
+        if idx
+          positions[idx] = "#{positions[idx]}#{positions[idx+1]}".to_i
+          positions.delete_at(idx+1)
         end
-        positions << pos
+        over_tens -= 1
       end
-      fretboard.formatter.print('', [Fingering.new(fretboard, positions)], opts)
+      max_fret_distance = 2
+      tmp = positions.select{|pos| !pos.nil? and pos > 0}
+      max_fret_distance = tmp.max - tmp.min unless tmp.empty?
+      max_fret_distance = 2 if max_fret_distance < 2
+      
+      [max_fret_distance, positions]
     end
     
   end
