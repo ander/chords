@@ -110,6 +110,13 @@ module Chords
       end
     end
     
+    def max_fret_distance
+      max_fret_distance = 0
+      tmp = @positions.select{|pos| !pos.nil? and pos > 0}
+      max_fret_distance = tmp.max - tmp.min unless tmp.empty?
+      max_fret_distance
+    end
+    
     private
     
     def new_note_positions(note, string_index, max_fret_distance)

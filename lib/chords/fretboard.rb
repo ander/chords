@@ -109,10 +109,13 @@ module Chords
       
       fretboard = Fretboard.new_by_string(tuning_part, 50, formatter_class)
       
-      max_fret_distance, positions = parse_positions(fingering_part, 
-                                                     fretboard.open_notes.size)
+      positions = parse_positions(fingering_part, fretboard.open_notes.size)
+      
+      fingering = Fingering.new(fretboard, positions)
+      max_fret_distance = fingering.max_fret_distance
+      max_fret_distance = 2 if max_fret_distance < 2
                                                      
-      fretboard.formatter.print('', [Fingering.new(fretboard, positions)],
+      fretboard.formatter.print('', [fingering],
                                 opts.merge(:max_fret_distance => max_fret_distance))
     end
     
@@ -132,12 +135,8 @@ module Chords
         end
         over_tens -= 1
       end
-      max_fret_distance = 2
-      tmp = positions.select{|pos| !pos.nil? and pos > 0}
-      max_fret_distance = tmp.max - tmp.min unless tmp.empty?
-      max_fret_distance = 2 if max_fret_distance < 2
       
-      [max_fret_distance, positions]
+      positions
     end
     
   end

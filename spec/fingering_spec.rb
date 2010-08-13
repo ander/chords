@@ -83,4 +83,17 @@ describe Fingering do
     end
   end
   
+  it "should return max_fret_distance" do
+    Fingering.new(Fretboard.standard, [0,2,2,1,0,0]).max_fret_distance.
+      should == 1
+    Fingering.new(Fretboard.standard, [0,0,0,0,0,10]).max_fret_distance.
+      should == 0
+    Fingering.new(Fretboard.standard, [0,14,14,13,0,nil]).max_fret_distance.
+      should == 1
+    Fingering.new(Fretboard.standard, [3,5,7,nil,0,nil]).max_fret_distance.
+      should == 4
+    Fingering.new(Fretboard.standard, [nil]*6).max_fret_distance.
+      should == 0
+  end
+  
 end
