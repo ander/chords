@@ -34,12 +34,12 @@ module Chords
     # Expanded note wil be on a higher string than existing notes.
     # It will also be the highest note.
     def expand(note, opts={})
-      max_fret_distance = opts[:max_fret_distance] || DEFAULT_MAX_FRET_DISTANCE
+      max_fret_dist = opts[:max_fret_distance] || DEFAULT_MAX_FRET_DISTANCE
       
       fingerings = []
       
       ((highest_used_string+1)..(@positions.size-1)).each do |str_i|
-        new_note_positions(note, str_i, max_fret_distance).each do |pos|
+        new_note_positions(note, str_i, max_fret_dist).each do |pos|
           if (@fretboard.open_notes[str_i] + pos) > highest_note
             new_positions = @positions.dup
             new_positions[str_i] = pos
@@ -54,7 +54,7 @@ module Chords
     # returns variations of this fingering with one duplicate note added
     def add_duplicate(opts={})
       return [] if unused_strings < 1
-      max_fret_distance = opts[:max_fret_distance] || DEFAULT_MAX_FRET_DISTANCE
+      max_fret_dist = opts[:max_fret_distance] || DEFAULT_MAX_FRET_DISTANCE
       
       fingerings = []
       
@@ -62,7 +62,7 @@ module Chords
         next unless pos.nil?
         
         each_note do |note|
-          new_note_positions(note, i, max_fret_distance).each do |pos|
+          new_note_positions(note, i, max_fret_dist).each do |pos|
             new_positions = @positions.dup
             new_positions[i] = pos
             fingerings << Fingering.new(@fretboard, new_positions)
@@ -111,22 +111,22 @@ module Chords
     end
     
     def max_fret_distance
-      max_fret_distance = 0
+      max_fret_dist = 0
       tmp = @positions.select{|pos| !pos.nil? and pos > 0}
-      max_fret_distance = tmp.max - tmp.min unless tmp.empty?
-      max_fret_distance
+      max_fret_dist = tmp.max - tmp.min unless tmp.empty?
+      max_fret_dist
     end
     
     private
     
-    def new_note_positions(note, string_index, max_fret_distance)
+    def new_note_positions(note, string_index, max_fret_dist)
       positions = []
       open_note = @fretboard.open_notes[string_index]
       pos = note.new(open_note.octave).value - open_note.value
       pos += 12 if pos < 0
       
       while pos <= @fretboard.frets
-        positions << pos if distance(pos) <= max_fret_distance
+        positions << pos if distance(pos) <= max_fret_dist
         pos += 12
       end
       positions

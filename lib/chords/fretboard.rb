@@ -112,11 +112,11 @@ module Chords
       positions = parse_positions(fingering_part, fretboard.open_notes.size)
       
       fingering = Fingering.new(fretboard, positions)
-      max_fret_distance = fingering.max_fret_distance
-      max_fret_distance = 2 if max_fret_distance < 2
+      max_fret_dist = fingering.max_fret_distance
+      max_fret_dist = 2 if max_fret_distance < 2
                                                      
       fretboard.formatter.print('', [fingering],
-                                opts.merge(:max_fret_distance => max_fret_distance))
+                                opts.merge(:max_fret_distance => max_fret_dist))
     end
     
     # parse positions from a string, for example '022100'

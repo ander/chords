@@ -1,4 +1,5 @@
 require 'chords/png_formatter'
+require 'base64'
 
 module Chords
   
