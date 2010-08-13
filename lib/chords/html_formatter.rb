@@ -19,7 +19,7 @@ module Chords
     
     # TODO: accept a separator element in opts
     def print(title, fingerings, opts={})
-      html = "<h2>#{title}</h2>\n"
+      html = title.empty? ? '' : "<h2>#{title}</h2>\n"
       
       fingerings.each do |fingering|
         html += get_element(fingering, opts)
