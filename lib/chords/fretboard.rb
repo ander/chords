@@ -113,7 +113,7 @@ module Chords
       
       fingering = Fingering.new(fretboard, positions)
       max_fret_dist = fingering.max_fret_distance
-      max_fret_dist = 2 if max_fret_distance < 2
+      max_fret_dist = 2 if max_fret_dist < 2
                                                      
       fretboard.formatter.print('', [fingering],
                                 opts.merge(:max_fret_distance => max_fret_dist))
