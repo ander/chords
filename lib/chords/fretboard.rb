@@ -120,8 +120,7 @@ module Chords
     end
     
     # parse positions from a string, for example '022100'
-    # returns [max_fret_distance, positions], where max_fret_distance has
-    # a minimum of 2
+    # returns [0,2,2,1,0,0] if no_of_string is six
     def self.parse_positions(position_str, no_of_strings)
       position_str.downcase!
       positions = position_str.scan(/./).map{|pos| pos == 'x' ? nil : pos.to_i}
